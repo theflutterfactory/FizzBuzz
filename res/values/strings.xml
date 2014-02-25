@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">FizzBuzz!</string>
+    <string name="action_settings">Settings</string>
+    <string name="search">Search</string>
+    <string name="search_hint">Find Number</string>
+    <string name="large_number">The number you entered is greater than the max value</string>
+    <string name="bad_number">Unable to parse the string as integer</string>
+
+    <string-array name="whats_new">
+        <item>Initial Release</item>
+    </string-array>
+
+</resources>
