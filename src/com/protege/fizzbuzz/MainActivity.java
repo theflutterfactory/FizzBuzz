@@ -34,7 +34,7 @@ public class MainActivity extends FragmentActivity
 	SearchView searchView;
 	SharedPreferences sharedPrefs;
 	private static final int MAX_NUMBER = 1000;
-	private static final String WHATSNEW_PREF = "com.example.fizzbuzzlistview.whatsnew";
+	private static final String WHATSNEW_PREF = "com.protege.fizzbuzzlistview.whatsnew";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 
@@ -45,10 +45,6 @@ public class MainActivity extends FragmentActivity
 
 		checkVersion();
 		
-		/**
-		 * Using a custom list item isn't necessary in this case, but I just wanted to demonstrate that I am familiar 
-		 * with creating custom views within a list. android.R.layout.simple_list_item_1 would be sufficient in this case.
-		 */
 		listView = (ListView)findViewById(R.id.fizzListView);
 		fizzbuzzList = new ArrayList<String>();
 		fizzAdapter = new FizzArrayAdapter(this, R.layout.fizz_list_item, fizzbuzzList);
@@ -87,7 +83,8 @@ public class MainActivity extends FragmentActivity
 	}
 
 	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
+	public boolean onOptionsItemSelected(MenuItem item) 
+	{
 		switch (item.getItemId()) {
 		case R.id.action_settings:
 			//TODO Add a few settings (ie, setting number of max items in the list)
@@ -106,7 +103,7 @@ public class MainActivity extends FragmentActivity
 			String query = intent.getStringExtra(SearchManager.QUERY);
 			int scrollToPosition = getIntFromString(query);
 
-			if(scrollToPosition >=0 && scrollToPosition < MAX_NUMBER){
+			if(scrollToPosition >= 0 && scrollToPosition < MAX_NUMBER){
 				listView.setSelection(getIntFromString(query));
 			}else if(scrollToPosition >= MAX_NUMBER){
 				Toast.makeText(this, getResources().getString(R.string.large_number), Toast.LENGTH_SHORT).show();
@@ -155,7 +152,8 @@ public class MainActivity extends FragmentActivity
 	/**
 	 * If the version has been changed, display a dialog detailing the new changes
 	 */
-	public void checkVersion(){
+	public void checkVersion()
+	{
 		String currentVersion = getCurrentVersion(this);
 		if(!sharedPrefs.getString(WHATSNEW_PREF, "0").equals(currentVersion)){
 			WhatsNewDialog whatsNewFrag = new WhatsNewDialog();
@@ -167,7 +165,8 @@ public class MainActivity extends FragmentActivity
 		}
 	}
 	
-	private String getCurrentVersion(Context context){
+	private String getCurrentVersion(Context context)
+	{
 		PackageInfo pInfo = null;
 		try {
 			pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
@@ -197,7 +196,7 @@ public class MainActivity extends FragmentActivity
 			final ViewHolder viewHolder;
 			final String fizzText = getItem(position);
 
-			//Only need to inflate the layout if we are not recycling the same view. ViewHolder holds the view in question
+			//Only need to inflate the layout if we are not recycling the same view
 			if(convertView == null){
 				convertView = LayoutInflater.from(context).inflate(resource, parent, false);
 				viewHolder = new ViewHolder(convertView);
@@ -212,21 +211,18 @@ public class MainActivity extends FragmentActivity
 		}
 	}
 
-	/**
-	 * Used to store the reusable view within a tag
-	 * @author juliancurrie
-	 */
 	public static class ViewHolder
 	{
 		TextView textView;
 		View view;
 
-		public ViewHolder(View v){
+		public ViewHolder(View v)
+		{
 			view = v;
 		}
 
-		//Keeps us from having to call findViewById over and over again.
-		public TextView getTextView(){
+		public TextView getTextView()
+		{
 			return (TextView) view.findViewById(R.id.fizzText);
 		}
 	}
