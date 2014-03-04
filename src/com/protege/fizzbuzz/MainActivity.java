@@ -1,85 +1,63 @@
 package com.protege.fizzbuzz;
 
-import java.util.ArrayList;
-
-import android.os.Bundle;
-import android.annotation.SuppressLint;
-import android.app.SearchManager;
+import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-import android.widget.SearchView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 public class MainActivity extends FragmentActivity 
 {
-	ListView listView;
-	ArrayList<String> fizzbuzzList;
-	FizzArrayAdapter fizzAdapter;
-	SearchView searchView;
 	SharedPreferences sharedPrefs;
-	private static final int MAX_NUMBER = 1000;
 	private static final String WHATSNEW_PREF = "com.protege.fizzbuzzlistview.whatsnew";
+	FizzBuzzPageAdapter fizzBuzzAdapter;  
+	ViewPager viewPager;
+	ActionBar aBar;
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState) 
+	public void onCreate(Bundle savedInstanceState) 
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		sharedPrefs = getSharedPreferences(WHATSNEW_PREF, 0);
-
-		checkVersion();
+		getActionBar().setSubtitle("Welcome!");
 		
-		listView = (ListView)findViewById(R.id.fizzListView);
-		fizzbuzzList = new ArrayList<String>();
-		fizzAdapter = new FizzArrayAdapter(this, R.layout.fizz_list_item, fizzbuzzList);
-		listView.setAdapter(fizzAdapter);
+		sharedPrefs = getSharedPreferences(WHATSNEW_PREF, 0);
+		checkVersion();
 
-		for(int i = 0; i<MAX_NUMBER; i++){
-			fizzbuzzList.add(fizzBuzz(i));
-		}
+		fizzBuzzAdapter = new FizzBuzzPageAdapter(getSupportFragmentManager());  
 
-		fizzAdapter.notifyDataSetChanged();
-
-		listView.setOnItemClickListener(new OnItemClickListener(){
-			@Override
-			public void onItemClick(AdapterView<?> parent, View view, int position,
-					long arg3) {
-				Toast.makeText(parent.getContext(), fizzAdapter.getItem(position), Toast.LENGTH_SHORT).show();
-			}
-		});
+		viewPager = (ViewPager) findViewById(R.id.pager);  
+		viewPager.setAdapter(fizzBuzzAdapter);  
 	}
 
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu) 
+	public void onNewIntent(Intent intent) 
 	{
-		super.onCreateOptionsMenu(menu);
-		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.main, menu);
+		super.onNewIntent(intent);   
 
-		final MenuItem menuItem = menu.findItem(R.id.Action_search);
+		if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+			SearchFragment fragment = (SearchFragment)getFragmentByPosition(1);
+			fragment.handleUserSearch(intent);
+		}
+	}
 
-		SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-		searchView = (SearchView) menuItem.getActionView();
-		searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-		searchView.setQueryHint(getResources().getString(R.string.search_hint));
-		searchView.setSubmitButtonEnabled(true);
-		return super.onCreateOptionsMenu(menu);
+	/**
+	 * return the fragment based on the default android tag name convention
+	 * @param position fragment position
+	 * @return the fragment if found
+	 */
+	private Fragment getFragmentByPosition(int position) 
+	{
+		String tag = "android:switcher:" + viewPager.getId() + ":" + position;
+		return getSupportFragmentManager().findFragmentByTag(tag);
 	}
 
 	@Override
@@ -93,62 +71,6 @@ public class MainActivity extends FragmentActivity
 		return false;
 	}
 
-	@SuppressLint("NewApi")
-	@Override
-	public void onNewIntent(Intent intent) 
-	{
-		super.onNewIntent(intent);      
-
-		if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-			String query = intent.getStringExtra(SearchManager.QUERY);
-			int scrollToPosition = getIntFromString(query);
-
-			if(scrollToPosition >= 0 && scrollToPosition < MAX_NUMBER){
-				listView.setSelection(getIntFromString(query));
-			}else if(scrollToPosition >= MAX_NUMBER){
-				Toast.makeText(this, getResources().getString(R.string.large_number), Toast.LENGTH_SHORT).show();
-			}else{
-				Toast.makeText(this, getResources().getString(R.string.bad_number), Toast.LENGTH_SHORT).show();
-			}
-
-			if(android.os.Build.VERSION.SDK_INT >= 14){
-				searchView.onActionViewCollapsed();
-			}
-
-			searchView.clearFocus();
-			dismissKeyboard();
-		}
-	}
-
-	private void dismissKeyboard()
-	{
-		InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-		imm.hideSoftInputFromWindow(searchView.getWindowToken(), 0);
-	}
-
-	private int getIntFromString(String userString)
-	{
-		try { 
-			return Integer.parseInt(userString); 
-		} catch(NumberFormatException e) { 
-			return -1; 
-		}
-	}
-
-	private String fizzBuzz(int i)
-	{
-		//Checks should always go from most specific to least specific
-		if(i % 5 == 0 && i % 3 == 0){
-			return i + " fizzbuzz";
-		}else if(i %  5 == 0){
-			return i + " buzz";
-		}else if(i % 3 == 0){
-			return i + " fizz";
-		}else{
-			return i + "";
-		}
-	}
-	
 	/**
 	 * If the version has been changed, display a dialog detailing the new changes
 	 */
@@ -164,7 +86,7 @@ public class MainActivity extends FragmentActivity
 			editor.commit();		
 		}
 	}
-	
+
 	private String getCurrentVersion(Context context)
 	{
 		PackageInfo pInfo = null;
@@ -177,53 +99,41 @@ public class MainActivity extends FragmentActivity
 		return null;
 	}
 
-	private class FizzArrayAdapter extends ArrayAdapter<String>
+	public class FizzBuzzPageAdapter extends FragmentPagerAdapter 
 	{
-		Context context;
-		int resource;
-
-		public FizzArrayAdapter(Context context, int resource,
-				ArrayList<String> fizzList) 
+		public FizzBuzzPageAdapter(FragmentManager fm) 
 		{
-			super(context, resource, fizzList);
-			this.context = context;
-			this.resource = resource;
+			super(fm);
 		}
 
 		@Override
-		public View getView(int position, View convertView, ViewGroup parent)
+		public Fragment getItem(int position) 
 		{
-			final ViewHolder viewHolder;
-			final String fizzText = getItem(position);
-
-			//Only need to inflate the layout if we are not recycling the same view
-			if(convertView == null){
-				convertView = LayoutInflater.from(context).inflate(resource, parent, false);
-				viewHolder = new ViewHolder(convertView);
-				convertView.setTag(viewHolder);
-			}else{
-				viewHolder = (ViewHolder) convertView.getTag();
+			switch(position){
+			case 0:
+				return new GameFragment();
+			case 1:
+				return new SearchFragment();
 			}
-
-			viewHolder.getTextView().setText(fizzText);
-
-			return convertView;
-		}
-	}
-
-	public static class ViewHolder
-	{
-		TextView textView;
-		View view;
-
-		public ViewHolder(View v)
-		{
-			view = v;
+			return null;
 		}
 
-		public TextView getTextView()
+		@Override
+		public int getCount() 
 		{
-			return (TextView) view.findViewById(R.id.fizzText);
+			return 2;
+		}
+
+		@Override
+		public CharSequence getPageTitle(int position) 
+		{
+			switch(position){
+			case 0:
+				return getResources().getString(R.string.game);
+			case 1:
+				return getResources().getString(R.string.search);
+			}
+			return null;
 		}
 	}
 }
