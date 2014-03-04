@@ -7,9 +7,17 @@
     <string name="search_hint">Find Number</string>
     <string name="large_number">The number you entered is greater than the max value</string>
     <string name="bad_number">Unable to parse the string as integer</string>
+    <string name="correct">Correct!</string>
+    <string name="wrong">Wrong!</string>
+    <string name="randomnumber">randomNumber</string>
+    <string name="confirmtext">confirmText</string>
+    <string name="error">There has been an internal error, please try again</string>
+    <string name="game">Game</string>
 
     <string-array name="whats_new">
-        <item>Initial Release</item>
+        <item>Added a viewpager for easier navigation</item>
+        <item>New game fragment that lets the user guess whether the shown number is fizz, buzz, or both</item>
+        <item>Update a lot of strings improved overall formatting</item>
     </string-array>
 
 </resources>
