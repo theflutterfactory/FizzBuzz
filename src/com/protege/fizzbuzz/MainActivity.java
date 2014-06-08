@@ -1,9 +1,7 @@
 package com.protege.fizzbuzz;
 
-import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
@@ -14,22 +12,19 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.MenuItem;
 
-public class MainActivity extends FragmentActivity 
-{
-	SharedPreferences sharedPrefs;
-	private static final String WHATSNEW_PREF = "com.protege.fizzbuzzlistview.whatsnew";
-	FizzBuzzPageAdapter fizzBuzzAdapter;  
-	ViewPager viewPager;
-	ActionBar aBar;
+import Util.PreferenceUtil;
+
+public class MainActivity extends FragmentActivity {
+	private FizzBuzzPageAdapter fizzBuzzAdapter;
+	private ViewPager viewPager;
+    private static final int GAME = 0;
+    private static final int SEARCH = 1;
 
 	@Override
-	public void onCreate(Bundle savedInstanceState) 
-	{
+	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		getActionBar().setSubtitle("Welcome!");
-		
-		sharedPrefs = getSharedPreferences(WHATSNEW_PREF, 0);
+		getActionBar().setSubtitle(getString(R.string.welcome));
 		checkVersion();
 
 		fizzBuzzAdapter = new FizzBuzzPageAdapter(getSupportFragmentManager());  
@@ -39,30 +34,22 @@ public class MainActivity extends FragmentActivity
 	}
 
 	@Override
-	public void onNewIntent(Intent intent) 
-	{
+	public void onNewIntent(Intent intent) {
 		super.onNewIntent(intent);   
 
 		if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-			SearchFragment fragment = (SearchFragment)getFragmentByPosition(1);
+			SearchFragment fragment = (SearchFragment)getFragmentByPosition(SEARCH);
 			fragment.handleUserSearch(intent);
 		}
 	}
 
-	/**
-	 * return the fragment based on the default android tag name convention
-	 * @param position fragment position
-	 * @return the fragment if found
-	 */
-	private Fragment getFragmentByPosition(int position) 
-	{
+	private Fragment getFragmentByPosition(int position) {
 		String tag = "android:switcher:" + viewPager.getId() + ":" + position;
 		return getSupportFragmentManager().findFragmentByTag(tag);
 	}
 
 	@Override
-	public boolean onOptionsItemSelected(MenuItem item) 
-	{
+	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.action_settings:
 			//TODO Add a few settings (ie, setting number of max items in the list)
@@ -71,25 +58,17 @@ public class MainActivity extends FragmentActivity
 		return false;
 	}
 
-	/**
-	 * If the version has been changed, display a dialog detailing the new changes
-	 */
-	public void checkVersion()
-	{
+	public void checkVersion(){
 		String currentVersion = getCurrentVersion(this);
-		if(!sharedPrefs.getString(WHATSNEW_PREF, "0").equals(currentVersion)){
+		if(!PreferenceUtil.getAppVersion(this).equals(currentVersion)){
 			WhatsNewDialog whatsNewFrag = new WhatsNewDialog();
 			whatsNewFrag.show(getSupportFragmentManager(), "dialog");
-
-			SharedPreferences.Editor editor = sharedPrefs.edit();
-			editor.putString(WHATSNEW_PREF, currentVersion);
-			editor.commit();		
+			PreferenceUtil.setAppVersion(this, currentVersion);
 		}
 	}
 
-	private String getCurrentVersion(Context context)
-	{
-		PackageInfo pInfo = null;
+	private String getCurrentVersion(Context context){
+		PackageInfo pInfo;
 		try {
 			pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
 			return pInfo.versionName;
@@ -99,20 +78,18 @@ public class MainActivity extends FragmentActivity
 		return null;
 	}
 
-	public class FizzBuzzPageAdapter extends FragmentPagerAdapter 
-	{
+	public class FizzBuzzPageAdapter extends FragmentPagerAdapter {
 		public FizzBuzzPageAdapter(FragmentManager fm) 
 		{
 			super(fm);
 		}
 
 		@Override
-		public Fragment getItem(int position) 
-		{
+		public Fragment getItem(int position) {
 			switch(position){
-			case 0:
+			case GAME:
 				return new GameFragment();
-			case 1:
+			case SEARCH:
 				return new SearchFragment();
 			}
 			return null;
@@ -125,12 +102,11 @@ public class MainActivity extends FragmentActivity
 		}
 
 		@Override
-		public CharSequence getPageTitle(int position) 
-		{
+		public CharSequence getPageTitle(int position) {
 			switch(position){
-			case 0:
+			case GAME:
 				return getResources().getString(R.string.game);
-			case 1:
+			case SEARCH:
 				return getResources().getString(R.string.search);
 			}
 			return null;
