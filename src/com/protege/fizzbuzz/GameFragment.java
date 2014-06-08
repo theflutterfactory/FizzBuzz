@@ -2,11 +2,7 @@ package com.protege.fizzbuzz;
 
 import java.util.Date;
 import java.util.Random;
-
-import android.app.Activity;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -17,9 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class GameFragment extends Fragment implements OnClickListener 
-{
-	FragmentActivity activity;
+public class GameFragment extends BaseFragment implements OnClickListener{
 	TextView randomNumText;
 	TextView confirmationText;
 	TextView bothText;
@@ -28,30 +22,14 @@ public class GameFragment extends Fragment implements OnClickListener
 	int fizzBuzzValue;
 
 	@Override
-	public void onAttach(Activity parentActivity)
-	{
-		super.onAttach(parentActivity);
-		activity = (FragmentActivity) parentActivity;
-	}
-
-	@Override
-	public void onCreate(Bundle savedInstanceState) 
-	{
-		super.onCreate(savedInstanceState);
-		setHasOptionsMenu(true);
-	}
-
-	@Override
-	public void onSaveInstanceState(Bundle outState) 
-	{
+	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 		outState.putString(activity.getResources().getString(R.string.randomnumber), randomNumText.getText().toString());
 		outState.putString(activity.getResources().getString(R.string.confirmtext), confirmationText.getText().toString());
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) 
-	{
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
 		View v = inflater.inflate(R.layout.fragment_game, container, false);
 		randomNumText = (TextView)v.findViewById(R.id.random_number_text);
 		confirmationText = (TextView)v.findViewById(R.id.confirmation_text);
@@ -62,8 +40,7 @@ public class GameFragment extends Fragment implements OnClickListener
 	}
 
 	@Override
-	public void onActivityCreated(Bundle savedInstanceState) 
-	{
+	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		randomNumText.setOnClickListener(this);
 		confirmationText.setOnClickListener(this);
@@ -84,8 +61,7 @@ public class GameFragment extends Fragment implements OnClickListener
 	 * millisecond date value is even or odd. No need to account for being divisible by both.
 	 * @return a fizz buzz value thats divisible by 3, 5, or both
 	 */
-	private int setFizzBuzzValue()
-	{
+	private int setFizzBuzzValue(){
 		try{
 			Date date = new Date();
 			if(date.getTime() % 2 == 0){
@@ -107,8 +83,7 @@ public class GameFragment extends Fragment implements OnClickListener
 	 * @return a random int from 0-999
 	 * @throws ArithmeticException
 	 */
-	private static int calculateSpecificRandomNumber(int multiple)
-	{
+	private static int calculateSpecificRandomNumber(int multiple){
 		Random random = new Random();
 		if(multiple > 0){
 			return multiple * random.nextInt(FizzBuzzHelper.MAX_FIZZBUZZ_NUMBER / multiple) ;
@@ -118,15 +93,13 @@ public class GameFragment extends Fragment implements OnClickListener
 	}
 
 	@Override
-	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) 
-	{
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		inflater.inflate(R.menu.main, menu);
 		menu.removeItem(R.id.Action_search);
 	}
 
 	@Override
-	public void onClick(View v) 
-	{
+	public void onClick(View v) {
 		switch(v.getId()){
 		case R.id.random_number_text:
 			break;
@@ -144,8 +117,7 @@ public class GameFragment extends Fragment implements OnClickListener
 		}
 	}
 
-	private void setConfirmationText(int expectedResult)
-	{
+	private void setConfirmationText(int expectedResult){
 		try{
 			if(FizzBuzzHelper.calculateFizzBuzz(Integer.parseInt((String) randomNumText.getText())) == expectedResult){
 				confirmationText.setText(activity.getResources().getString(R.string.correct));
