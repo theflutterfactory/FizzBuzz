@@ -3,13 +3,10 @@ package com.protege.fizzbuzz;
 import java.util.ArrayList;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -25,40 +22,21 @@ import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class SearchFragment extends Fragment 
-{
+public class SearchFragment extends BaseFragment{
 	ListView listView;
 	ArrayList<String> fizzbuzzList;
 	FizzArrayAdapter fizzAdapter;
 	SearchView searchView;
-	FragmentActivity activity;
 
 	@Override
-	public void onAttach(Activity parentActivity)
-	{
-		super.onAttach(parentActivity);
-		activity = (FragmentActivity) parentActivity;
-	}
-
-	@Override
-	public void onCreate(Bundle savedInstanceState) 
-	{
-		super.onCreate(savedInstanceState);
-		setRetainInstance(true);
-		setHasOptionsMenu(true);
-	}
-
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) 
-	{
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
 		View v = inflater.inflate(R.layout.fragment_search, container, false);
 		listView = (ListView)v.findViewById(R.id.fizzListView);
 		return v;
 	}
 
 	@Override
-	public void onActivityCreated(Bundle savedInstanceState) 
-	{
+	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 
 		fizzbuzzList = new ArrayList<String>();
@@ -81,8 +59,7 @@ public class SearchFragment extends Fragment
 	}
 
 	@Override
-	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) 
-	{
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		inflater.inflate(R.menu.main, menu);
 		final MenuItem menuItem = menu.findItem(R.id.Action_search);
 
@@ -94,8 +71,7 @@ public class SearchFragment extends Fragment
 	}
 
 	@SuppressLint("NewApi")
-	public void handleUserSearch(Intent intent)
-	{
+	public void handleUserSearch(Intent intent){
 		String query = intent.getStringExtra(SearchManager.QUERY);
 		int scrollToPosition = getScrollToPositionFromString(query);
 
@@ -115,14 +91,12 @@ public class SearchFragment extends Fragment
 		dismissKeyboard();
 	}
 
-	private void dismissKeyboard()
-	{
+	private void dismissKeyboard(){
 		InputMethodManager imm = (InputMethodManager)activity.getSystemService(Context.INPUT_METHOD_SERVICE);
 		imm.hideSoftInputFromWindow(searchView.getWindowToken(), 0);
 	}
 
-	private int getScrollToPositionFromString(String userString)
-	{
+	private int getScrollToPositionFromString(String userString){
 		try { 
 			return Integer.parseInt(userString); 
 		} catch(NumberFormatException e) { 
@@ -130,8 +104,7 @@ public class SearchFragment extends Fragment
 		}
 	}
 
-	private String printFizzBuzzValue(int position, int FizzBuzzValue)
-	{
+	private String printFizzBuzzValue(int position, int FizzBuzzValue){
 		switch(FizzBuzzValue){
 		case FizzBuzzHelper.FIZZ:
 			return position + " fizz";
@@ -144,22 +117,19 @@ public class SearchFragment extends Fragment
 		}
 	}
 
-	private class FizzArrayAdapter extends ArrayAdapter<String>
-	{
+	private class FizzArrayAdapter extends ArrayAdapter<String>{
 		Context context;
 		int resource;
 
 		public FizzArrayAdapter(Context context, int resource,
-				ArrayList<String> fizzList) 
-		{
+				ArrayList<String> fizzList) {
 			super(context, resource, fizzList);
 			this.context = context;
 			this.resource = resource;
 		}
 
 		@Override
-		public View getView(int position, View convertView, ViewGroup parent)
-		{
+		public View getView(int position, View convertView, ViewGroup parent){
 			final ViewHolder viewHolder;
 			final String fizzText = getItem(position);
 
@@ -178,9 +148,7 @@ public class SearchFragment extends Fragment
 		}
 	}
 
-	public static class ViewHolder
-	{
-		TextView textView;
+	public static class ViewHolder{
 		View view;
 
 		public ViewHolder(View v)

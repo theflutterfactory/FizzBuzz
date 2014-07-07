@@ -13,6 +13,7 @@
     <string name="confirmtext">confirmText</string>
     <string name="error">There has been an internal error, please try again</string>
     <string name="game">Game</string>
+    <string name="welcome">Welcome!</string>
 
     <string-array name="whats_new">
         <item>Added a viewpager for easier navigation</item>
