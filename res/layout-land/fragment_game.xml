@@ -68,7 +68,7 @@
             android:layout_weight="1.00"
             android:background="@drawable/both_background"
             android:gravity="center"
-            android:text="Both"
+            android:text="@string/both"
             android:textSize="20sp" />
 
         <ImageView

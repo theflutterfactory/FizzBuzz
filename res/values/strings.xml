@@ -17,6 +17,8 @@
     <string name="wins">WINS: </string>
     <string name="losses">LOSSES: </string>
     <string name="reset_score">Reset</string>
+    <string name="whats_new"><![CDATA[What&apos;s New]]></string>
+    <string name="both">Both</string>
 
     <string-array name="whats_new">
         <item>Added a viewpager for easier navigation</item>
