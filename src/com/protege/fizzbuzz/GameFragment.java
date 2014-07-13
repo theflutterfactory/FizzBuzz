@@ -34,13 +34,6 @@ public class GameFragment extends BaseFragment implements OnClickListener{
     private static final String TAG = "GameFragment";
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putString(activity.getResources().getString(R.string.randomnumber), randomNumText.getText().toString());
-        outState.putString(activity.getResources().getString(R.string.confirmtext), confirmationText.getText().toString());
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_game, container, false);
         randomNumText = (TextView)v.findViewById(R.id.random_number_text);
@@ -56,18 +49,14 @@ public class GameFragment extends BaseFragment implements OnClickListener{
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        setRetainInstance(true);
         randomNumText.setOnClickListener(this);
         confirmationText.setOnClickListener(this);
         fizzImage.setOnClickListener(this);
         buzzImage.setOnClickListener(this);
         bothText.setOnClickListener(this);
 
-        if(savedInstanceState == null){
-            animateNewNumber();
-        }else{
-            randomNumText.setText(savedInstanceState.getString(activity.getResources().getString(R.string.randomnumber)));
-            confirmationText.setText(savedInstanceState.getString(activity.getResources().getString(R.string.confirmtext)));
-        }
+        animateNewNumber();
 
         winsCountText.setText(activity.getString(R.string.wins) + PreferenceUtil.getCorrectAnswers(activity));
         lossesCountText.setText(activity.getString(R.string.losses) + PreferenceUtil.getIncorrectAnswers(activity));
