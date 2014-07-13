@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -83,8 +84,20 @@ public class GameFragment extends BaseFragment implements OnClickListener{
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.main, menu);
-        menu.removeItem(R.id.Action_search);
+        inflater.inflate(R.menu.game_menu, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.reset_score:
+                PreferenceUtil.setCorrectAnswers(activity, 0);
+                PreferenceUtil.setIncorrectAnswers(activity, 0);
+                winsCountText.setText(activity.getString(R.string.wins) + 0);
+                lossesCountText.setText(activity.getString(R.string.losses) + 0);
+                return true;
+        }
+        return false;
     }
 
     @Override
