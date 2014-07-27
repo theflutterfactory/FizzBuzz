@@ -2,62 +2,84 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal" >
+    android:orientation="horizontal"
+    android:baselineAligned="false">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:orientation="vertical" >
+        android:layout_weight="2"
+        android:orientation="vertical"
+        android:layout_marginTop="20dp">
+
+        <TextView
+            android:id="@+id/wins_text"
+            android:layout_marginLeft="20dp"
+            android:layout_alignParentLeft="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="22sp"/>
+
+        <TextView
+            android:id="@+id/losses_text"
+            android:layout_marginRight="20dp"
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="22sp"/>
 
         <TextView
             android:id="@+id/random_number_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
+            android:layout_centerInParent="true"
             android:textSize="60sp" />
 
         <TextView
             android:id="@+id/confirmation_text"
+            android:layout_below="@id/random_number_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:padding="10dp"
             android:textSize="20sp" />
-    </LinearLayout>
 
-    <LinearLayout
+    </RelativeLayout>
+
+    <RelativeLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:paddingRight="15dp" >
-
-        <ImageView
-            android:id="@+id/fizz_image"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:src="@drawable/ic_pop_can" />
+        android:gravity="center" >
 
         <TextView
             android:id="@+id/both_text"
             android:layout_width="100dp"
-            android:layout_height="25dp"
-            android:layout_weight="1.00"
+            android:layout_height="100dp"
             android:background="@drawable/both_background"
+            android:layout_centerInParent="true"
             android:gravity="center"
-            android:text="Both"
+            android:text="@string/both"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
             android:textSize="20sp" />
+
+        <ImageView
+            android:id="@+id/fizz_image"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/fizz"
+            android:layout_above="@id/both_text"
+            android:src="@drawable/ic_pop_can" />
 
         <ImageView
             android:id="@+id/buzz_image"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/both_text"
+            android:contentDescription="@string/buzz"
             android:src="@drawable/ic_bee" />
-    </LinearLayout>
+    </RelativeLayout>
 
 </LinearLayout>

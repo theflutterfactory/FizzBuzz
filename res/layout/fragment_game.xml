@@ -4,6 +4,28 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp">
+
+        <TextView
+            android:id="@+id/wins_text"
+            android:layout_marginLeft="20dp"
+            android:layout_alignParentLeft="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="22sp"/>
+
+        <TextView
+            android:id="@+id/losses_text"
+            android:layout_marginRight="20dp"
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="22sp"/>
+    </RelativeLayout>
+
     <TextView
         android:id="@+id/random_number_text"
         android:layout_width="match_parent"
@@ -23,36 +45,36 @@
         android:padding="10dp"
         android:textSize="20sp" />
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:orientation="horizontal"
-        android:paddingBottom="15dp" >
+        android:layout_marginBottom="15dp" >
 
         <ImageView
             android:id="@+id/fizz_image"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_alignParentLeft="true"
+            android:contentDescription="@string/fizz"
             android:src="@drawable/ic_pop_can" />
 
         <TextView
             android:id="@+id/both_text"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:gravity="center"
-            android:text="Both"
+            android:layout_centerInParent="true"
+            android:text="@string/both"
             android:background="@drawable/both_background"
             android:textSize="20sp" />
 
         <ImageView
             android:id="@+id/buzz_image"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:contentDescription="@string/buzz"
+            android:layout_alignParentRight="true"
             android:src="@drawable/ic_bee" />
-    </LinearLayout>
+    </RelativeLayout>
 
 </LinearLayout>

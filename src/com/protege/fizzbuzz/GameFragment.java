@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -19,21 +20,18 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import Util.PreferenceUtil;
+
 public class GameFragment extends BaseFragment implements OnClickListener{
     TextView randomNumText;
     TextView confirmationText;
     TextView bothText;
+    TextView winsCountText;
+    TextView lossesCountText;
     ImageView fizzImage;
     ImageView buzzImage;
     int fizzBuzzValue;
     private static final String TAG = "GameFragment";
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putString(activity.getResources().getString(R.string.randomnumber), randomNumText.getText().toString());
-        outState.putString(activity.getResources().getString(R.string.confirmtext), confirmationText.getText().toString());
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
@@ -43,24 +41,25 @@ public class GameFragment extends BaseFragment implements OnClickListener{
         bothText = (TextView)v.findViewById(R.id.both_text);
         fizzImage = (ImageView)v.findViewById(R.id.fizz_image);
         buzzImage = (ImageView)v.findViewById(R.id.buzz_image);
+        winsCountText = (TextView)v.findViewById(R.id.wins_text);
+        lossesCountText = (TextView)v.findViewById(R.id.losses_text);
         return v;
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        setRetainInstance(true);
         randomNumText.setOnClickListener(this);
         confirmationText.setOnClickListener(this);
         fizzImage.setOnClickListener(this);
         buzzImage.setOnClickListener(this);
         bothText.setOnClickListener(this);
 
-        if(savedInstanceState == null){
-            animationNewRandomText();
-        }else{
-            randomNumText.setText(savedInstanceState.getString(activity.getResources().getString(R.string.randomnumber)));
-            confirmationText.setText(savedInstanceState.getString(activity.getResources().getString(R.string.confirmtext)));
-        }
+        animateNewNumber();
+
+        winsCountText.setText(activity.getString(R.string.wins) + PreferenceUtil.getCorrectAnswers(activity));
+        lossesCountText.setText(activity.getString(R.string.losses) + PreferenceUtil.getIncorrectAnswers(activity));
     }
 
     private static int calculateSpecificRandomNumber(int multiple){
@@ -74,32 +73,53 @@ public class GameFragment extends BaseFragment implements OnClickListener{
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.main, menu);
-        menu.removeItem(R.id.Action_search);
+        inflater.inflate(R.menu.game_menu, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.reset_score:
+                PreferenceUtil.setCorrectAnswers(activity, 0);
+                PreferenceUtil.setIncorrectAnswers(activity, 0);
+                winsCountText.setText(activity.getString(R.string.wins) + 0);
+                lossesCountText.setText(activity.getString(R.string.losses) + 0);
+                return true;
+        }
+        return false;
     }
 
     @Override
     public void onClick(View v) {
         switch(v.getId()){
             case R.id.random_number_text:
-                animationNewRandomText();
+                animateNewNumber();
                 break;
             case R.id.confirmation_text:
                 break;
             case R.id.fizz_image:
                 if(isCorrectAnswer(FizzBuzzHelper.FIZZ)){
                     animateFizz();
+                    addToCorrectCount();
+                } else{
+                    addToIncorrectCount();
                 }
                 break;
             case R.id.buzz_image:
                 if(isCorrectAnswer(FizzBuzzHelper.BUZZ)){
                     animateBuzz();
+                    addToCorrectCount();
+                } else{
+                    addToIncorrectCount();
                 }
                 break;
             case R.id.both_text:
                 if(isCorrectAnswer(FizzBuzzHelper.FIZZBUZZ)){
                     animateFizzBuzz();
                     animateBothText();
+                    addToCorrectCount();
+                } else{
+                    addToIncorrectCount();
                 }
                 break;
         }
@@ -125,7 +145,7 @@ public class GameFragment extends BaseFragment implements OnClickListener{
             confirmationText.setTextColor(Color.RED);
         }
 
-        animationNewRandomText();
+        animateNewNumber();
         return isCorrect;
     }
 
@@ -161,7 +181,7 @@ public class GameFragment extends BaseFragment implements OnClickListener{
      * We only want to generate a number that's divisible by 3 or 5. Choosing which based on whether the current
      * millisecond date value is even or odd. No need to account for being divisible by both.
      */
-    private void animationNewRandomText(){
+    private void animateNewNumber(){
         ValueAnimator rotateAnim = ObjectAnimator.ofFloat(randomNumText, "rotationX", 0f, 360f);
         rotateAnim.setDuration(700);
         rotateAnim.start();
@@ -197,5 +217,19 @@ public class GameFragment extends BaseFragment implements OnClickListener{
 
             }
         });
+    }
+
+    private void addToCorrectCount(){
+        int previousCorrectAnswers = PreferenceUtil.getCorrectAnswers(activity);
+        int currentCorrectAnswers = ++previousCorrectAnswers;
+        PreferenceUtil.setCorrectAnswers(activity, currentCorrectAnswers);
+        winsCountText.setText(activity.getString(R.string.wins) + currentCorrectAnswers);
+    }
+
+    private void addToIncorrectCount(){
+        int previousIncorrectAnswers = PreferenceUtil.getIncorrectAnswers(activity);
+        int currentIncorrectAnswers = ++previousIncorrectAnswers;
+        PreferenceUtil.setIncorrectAnswers(activity, previousIncorrectAnswers++);
+        lossesCountText.setText(activity.getString(R.string.losses) + currentIncorrectAnswers);
     }
 }

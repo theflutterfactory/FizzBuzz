@@ -60,7 +60,7 @@ public class SearchFragment extends BaseFragment{
 
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-		inflater.inflate(R.menu.main, menu);
+		inflater.inflate(R.menu.search_menu, menu);
 		final MenuItem menuItem = menu.findItem(R.id.Action_search);
 
 		SearchManager searchManager = (SearchManager) activity.getSystemService(Context.SEARCH_SERVICE);
