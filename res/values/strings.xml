@@ -2,21 +2,22 @@
 <resources>
 
     <string name="app_name">FizzBuzz!</string>
-    <string name="action_settings">Settings</string>
     <string name="search">Search</string>
     <string name="search_hint">Find Number</string>
     <string name="large_number">The number you entered is greater than the max value</string>
     <string name="bad_number">Unable to parse the string as integer</string>
     <string name="correct">Correct!</string>
     <string name="wrong">Wrong!</string>
-    <string name="randomnumber">randomNumber</string>
-    <string name="confirmtext">confirmText</string>
     <string name="error">There has been an internal error, please try again</string>
     <string name="game">Game</string>
     <string name="welcome">Welcome!</string>
     <string name="wins">WINS: </string>
     <string name="losses">LOSSES: </string>
     <string name="reset_score">Reset</string>
+    <string name="whats_new"><![CDATA[What&apos;s New]]></string>
+    <string name="both">Both</string>
+    <string name="fizz">fizz</string>
+    <string name="buzz">buzz</string>
 
     <string-array name="whats_new">
         <item>Added a viewpager for easier navigation</item>
