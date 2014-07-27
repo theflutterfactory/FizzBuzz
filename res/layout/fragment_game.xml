@@ -45,26 +45,22 @@
         android:padding="10dp"
         android:textSize="20sp" />
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:orientation="horizontal"
+        android:layout_height="100dp"
         android:paddingBottom="15dp" >
 
         <ImageView
             android:id="@+id/fizz_image"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:contentDescription="@string/fizz"
             android:src="@drawable/ic_pop_can" />
 
         <TextView
             android:id="@+id/both_text"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="1"
             android:gravity="center"
             android:text="@string/both"
             android:background="@drawable/both_background"
@@ -72,11 +68,10 @@
 
         <ImageView
             android:id="@+id/buzz_image"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:contentDescription="@string/buzz"
             android:src="@drawable/ic_bee" />
-    </LinearLayout>
+    </RelativeLayout>
 
 </LinearLayout>

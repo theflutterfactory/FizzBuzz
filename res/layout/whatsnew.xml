@@ -4,37 +4,30 @@
     android:layout_height="wrap_content"
     android:orientation="vertical" >
 
-    <LinearLayout
-        android:id="@+id/toplayout"
+    <TextView
+        android:id="@+id/whatsnew_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical" >
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="@string/whats_new"
+        android:textColor="#000000" />
 
-        <TextView
-            android:id="@+id/whatsnew_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:padding="10dp"
-            android:text="@string/whats_new"
-            android:textColor="#000000" />
+    <View
+        android:id="@+id/div1"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@color/fizz_color" />
 
-        <View
-            android:id="@+id/div1"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:background="@color/fizz_color" />
-
-        <TextView
-            android:id="@+id/whatsnew_text"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:padding="10dp"
-            android:textColor="#000000"
-            android:textIsSelectable="true" />
-    </LinearLayout>
+    <TextView
+        android:id="@+id/whatsnew_text"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:padding="10dp"
+        android:textColor="#000000"
+        android:textIsSelectable="true" />
 
 </LinearLayout>
