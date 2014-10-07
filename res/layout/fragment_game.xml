@@ -33,7 +33,7 @@
         android:layout_marginTop="40dp"
         android:layout_weight="4"
         android:gravity="center"
-        android:textSize="70sp" />
+        android:textSize="@dimen/game_text_size" />
 
     <TextView
         android:id="@+id/confirmation_text"
@@ -52,28 +52,30 @@
 
         <ImageView
             android:id="@+id/fizz_image"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/bee_can_width"
+            android:layout_height="@dimen/bee_can_height"
             android:layout_alignParentLeft="true"
             android:contentDescription="@string/fizz"
+            android:layout_centerVertical="true"
             android:src="@drawable/ic_pop_can" />
 
         <TextView
             android:id="@+id/both_text"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="@dimen/circle_diameter"
+            android:layout_height="@dimen/circle_diameter"
             android:gravity="center"
             android:layout_centerInParent="true"
             android:text="@string/both"
             android:background="@drawable/both_background"
-            android:textSize="20sp" />
+            android:textSize="@dimen/both_text_size" />
 
         <ImageView
             android:id="@+id/buzz_image"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/bee_can_width"
+            android:layout_height="@dimen/bee_can_height"
             android:contentDescription="@string/buzz"
             android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
             android:src="@drawable/ic_bee" />
     </RelativeLayout>
 

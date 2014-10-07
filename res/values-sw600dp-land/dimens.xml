@@ -1,0 +1,5 @@
+<resources>
+
+    <dimen name="circle_diameter">100dp</dimen>
+
+</resources>

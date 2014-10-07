@@ -34,7 +34,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:layout_centerInParent="true"
-            android:textSize="60sp" />
+            android:textSize="@dimen/game_text_size" />
 
         <TextView
             android:id="@+id/confirmation_text"
@@ -53,30 +53,30 @@
         android:layout_weight="1"
         android:gravity="center" >
 
+        <ImageView
+            android:id="@+id/fizz_image"
+            android:layout_width="@dimen/bee_can_width"
+            android:layout_height="@dimen/bee_can_height"
+            android:contentDescription="@string/fizz"
+            android:src="@drawable/ic_pop_can" />
+
         <TextView
             android:id="@+id/both_text"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="@dimen/circle_diameter"
+            android:layout_height="@dimen/circle_diameter"
             android:background="@drawable/both_background"
             android:layout_centerInParent="true"
             android:gravity="center"
             android:text="@string/both"
+            android:layout_below="@id/fizz_image"
             android:layout_marginBottom="10dp"
             android:layout_marginTop="10dp"
             android:textSize="20sp" />
 
         <ImageView
-            android:id="@+id/fizz_image"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:contentDescription="@string/fizz"
-            android:layout_above="@id/both_text"
-            android:src="@drawable/ic_pop_can" />
-
-        <ImageView
             android:id="@+id/buzz_image"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/bee_can_width"
+            android:layout_height="@dimen/bee_can_height"
             android:layout_below="@id/both_text"
             android:contentDescription="@string/buzz"
             android:src="@drawable/ic_bee" />
